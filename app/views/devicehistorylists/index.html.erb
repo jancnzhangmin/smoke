@@ -1,0 +1,116 @@
+<%= render 'layerbegin' %>
+
+
+
+
+
+<div class="page-content">
+  <div class="page-header">
+    <h1>
+      <%= @device.sn %> 设备列表
+    </h1>
+  </div><!-- /.page-header -->
+
+  <div class="row">
+    <div class="col-xs-12">
+      <!-- PAGE CONTENT BEGINS -->
+
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="table-responsive">
+            <table id="sample-table-1" class="table table-striped table-bordered table-hover">
+              <thead>
+              <tr>
+                <th class="text-center">设备SN</th>
+                <th class="text-center">imsi</th>
+                <th class="text-center">swver</th>
+                <th class="text-center">hwver</th>
+                <th class="text-center">vol</th>
+                <th class="text-center">状态</th>
+                <th class="text-center">rsrp</th>
+                <th class="text-center">sinr</th>
+                <th class="text-center">wsc</th>
+                <th class="text-center">时间戳</th>
+                <th class="text-center">最后上报</th>
+
+
+
+              </tr>
+              </thead>
+
+              <tbody>
+              <% @devicehistorylists.each do |devicehistorylist| %>
+                  <tr>
+                    <td>
+                      <%= devicehistorylist.sn %>
+                    </td>
+                    <td>
+                      <%= devicehistorylist.imsi %>
+                    </td>
+                    <td>
+                      <%= devicehistorylist.swver %>
+                    </td>
+                    <td>
+                      <%= devicehistorylist.hwver %>
+                    </td>
+                    <td>
+                    <%= devicehistorylist.vol %>
+                    </td>
+                    <td>
+                      <%if devicehistorylist.alarmstatus == 0%>
+                                            <span class="text-success">
+                        正常
+                      </span>
+                      <% else %>
+                                                <span class="text-danger">
+                        异常
+                      </span>
+                      <% end %>
+                    </td>
+                    <td>
+                      <%= devicehistorylist.rsrp %>
+                    </td>
+                    <td>
+                      <%= devicehistorylist.sinr %>
+                    </td>
+                    <td>
+                      <%= devicehistorylist.wsc %>
+                    </td>
+                    <td>
+                      <%= devicehistorylist.ctime %>
+                    </td>
+                    <td>
+                      <% if devicehistorylist.ctimestramp %>
+                          <%= devicehistorylist.ctimestramp.strftime('%Y-%m-%d %H:%M:%S') %>
+                      <% end %>
+                    </td>
+                  </tr>
+              <% end %>
+
+
+
+
+
+
+
+
+              </tbody>
+            </table>
+          </div><!-- /.table-responsive -->
+        </div><!-- /span -->
+      </div><!-- /row -->
+
+      <div data-turbolinks="false" class="text-center">
+        <%= will_paginate @devicehistorylists, renderer: BootstrapPagination::Rails %>
+      </div>
+
+
+
+
+    </div><!-- /.col -->
+  </div><!-- /.row -->
+</div><!-- /.page-content -->
+
+
+
+<% render 'layerend' %>

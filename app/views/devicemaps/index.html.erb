@@ -1,0 +1,64 @@
+<%= render 'layerbegin' %>
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=iOxsL9Z27dKiNtY5s4m8vRjUyZiNwZOC"></script>
+<script>
+  $(document).ready(function(){
+      var map = new BMap.Map("allmap");
+      map.centerAndZoom('昆明',8);
+      map.enableScrollWheelZoom();
+      map.enableContinuousZoom();
+
+      var devicearr = new Array();
+      devicearr.push(0,1,2);
+      $.ajax({
+          type: 'get',
+          async: false,
+          url: 'devicemaps/getdevice',
+          data:{
+              keyword:devicearr
+          },
+          success: function (data) {
+              map.clearOverlays();
+              $.each(data,function(i,item){
+                  var pointX = item.coordinate.split(',')[0];
+                  var pointY = item.coordinate.split(',')[1];
+                  var point = new BMap.Point(pointX,pointY);
+                  var marker = new BMap.Marker(point);
+                  map.addOverlay(marker);
+              });
+
+          }
+      });
+
+
+  });
+
+
+
+</script>
+<div class="page-content">
+  <div class="page-header">
+    <h1>
+      设备地图分布
+    </h1>
+  </div><!-- /.page-header -->
+
+  <div class="row">
+    <div class="col-xs-12">
+      <!-- PAGE CONTENT BEGINS -->
+
+
+
+<div id="allmap" class="col-md-12" style="height: 800px;"></div>
+
+
+
+
+
+
+    </div><!-- /.col -->
+  </div><!-- /.row -->
+</div><!-- /.page-content -->
+
+
+
+<% render 'layerend' %>

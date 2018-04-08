@@ -1,0 +1,196 @@
+<%= render 'layerbegin' %>
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=iOxsL9Z27dKiNtY5s4m8vRjUyZiNwZOC"></script>
+<script>
+    $(document).ready(function(){
+        $('#sn').blur(function(){
+            $('#powerspan').hide();
+            $('snalert').hide();
+            if($(this).val()!='') {
+                $.ajax({
+                    type: 'get',
+                    async: false,
+                    url: 'getdevicesubscribeinfo',
+                    data:{
+                      sn:$(this).val()
+                    },
+                    success: function (data) {
+                        if(data.status == '10000'){
+                            $('#powerspan').show();
+                            if(data.powerstatu == '0') {
+                                $('#powerspan').attr('title','正常');
+                                $('#poweri').removeClass('fa-battery-1');
+                                $('#poweri').removeClass('text-danger');
+                                $('#poweri').addClass('fa-battery-3');
+                                $('#poweri').addClass('text-success');
+                            }else{
+                                $('#powerspan').title('低电量');
+                                $('#poweri').removeClass('fa-battery-3');
+                                $('#poweri').removeClass('text-success');
+                                $('#poweri').addClass('fa-battery-1');
+                                $('#poweri').addClass('text-danger');
+                            }
+                            $('#power').val(data.power);
+                        }else if(data.status == '10001'){
+                            $('#snalert').text('设备已存在');
+                            $('#snalert').show();
+                        }else{
+                            $('#snalert').text('无效sn');
+                            $('#snalert').show();
+                        }
+                    }
+                });
+            }
+        });
+
+        var map = new BMap.Map("allmap");
+        map.centerAndZoom('昆明',18);
+        map.enableScrollWheelZoom();
+        map.enableContinuousZoom();
+        $('#modalbtn').click(function(){
+            $('#my-modal').modal('show');
+
+            map.centerAndZoom($('#address').val(),18);
+            map.enableScrollWheelZoom();
+            map.enableContinuousZoom();
+            map.addEventListener("click",function(e){
+                map.clearOverlays();
+                //alert(e.point.lng + "," + e.point.lat);
+                var marker = new BMap.Marker(new BMap.Point(e.point.lng, e.point.lat));
+                map.addOverlay(marker);
+                $('#coorval').val(e.point.lng+','+ e.point.lat);
+            });
+           return false;
+        });
+        $('#coorok').click(function(){
+            $('#coordinate').val($('#coorval').val());
+        });
+
+        $('#submit').click(function(){
+           $('#name').val($('#nameselect').find("option:selected").text());
+        });
+    });
+</script>
+<div class="page-content">
+  <div class="page-header">
+    <h1>
+      订阅设备
+    </h1>
+  </div><!-- /.page-header -->
+
+  <div class="row">
+    <div class="col-xs-12">
+      <!-- PAGE CONTENT BEGINS -->
+
+      <%= form_for(@subscribedevice,:html => {:class=>'form-horizontal m-t',:multipart => true}) do |f| %>
+          <h3 class="header smaller lighter blue">
+
+            <small></small>
+          </h3>
+          <div class="form-group">
+            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 设备SN </label>
+            <div class="col-sm-9">
+              <%= f.text_field :sn,class:"col-xs-10 col-sm-5",id:'sn' %>
+              <span  class="help-inline col-xs-12 col-sm-7" >
+												<span id="snalert" class="middle text-danger" style="display: none;">Inline help text</span>
+											</span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 设备名称 </label>
+            <div class="col-sm-9">
+              <%= f.hidden_field :name,class:"col-xs-10 col-sm-5",id:'name' %>
+              <select class=" col-xs-10 col-sm-5" id="nameselect">
+                <option value="1">烟感</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 设备型号 </label>
+            <div class="col-sm-9">
+              <%= f.text_field :model,class:"col-xs-10 col-sm-5" %>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 地址 </label>
+            <div class="col-sm-9">
+              <%= f.text_field :address,class:"col-xs-10 col-sm-5", id:'address' %>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 坐标位置 </label>
+            <div class="col-sm-9">
+              <%= f.text_field :coordinate,class:"col-xs-10 col-sm-5",id:'coordinate' %>
+
+                <button id="modalbtn" class="btn btn-link btn-xs">
+                  <i class="fa fa-map-marker bigger"></i>
+                </button>
+
+            </div>
+          </div>
+
+
+
+          <div class="form-group">
+            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 所在楼层 </label>
+            <div class="col-sm-9">
+              <%= f.text_field :floor,class:"col-xs-10 col-sm-5" %>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 电量 </label>
+            <div class="col-sm-9">
+
+              <input type="text" class="col-xs-10 col-sm-5" readonly="" id="power">
+              <span id="powerspan" title="正常" class="help-inline col-xs-12 col-sm-7" style="margin-top: 3px;display:none;">
+												<i id="poweri" class="fa fa-battery-3 text-success"></i>
+											</span>
+            </div>
+          </div>
+
+
+
+          <div class="clearfix form-actions">
+            <div class="col-md-offset-3 col-md-9">
+              <button type="submit" name="commit" value="保存" class="btn btn-info" data-disable-with="保存" id="submit">
+                <i class="icon-ok bigger-110"></i>
+                保存
+              </button>
+            </div>
+          </div>
+      <% end %>
+
+      <div id="my-modal" class="modal fade" tabindex="-1">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+              <h3 class="smaller lighter blue no-margin">拾取坐标</h3><input id="coorval" class="pull-right" style="margin-top: -22px;">
+            </div>
+
+            <div class="modal-body">
+              <div id="allmap" style="width: 540px;height: 600px;"></div>
+            </div>
+
+            <div class="modal-footer">
+              <button class="btn btn-sm btn-info pull-right" data-dismiss="modal" id="coorok">
+                <i class="icon-ok"></i>
+                确定
+              </button>
+            </div>
+          </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+      </div>
+
+
+    </div><!-- /.col -->
+  </div><!-- /.row -->
+</div><!-- /.page-content -->
+
+
+
+<% render 'layerend' %>

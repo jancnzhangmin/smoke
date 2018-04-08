@@ -1,0 +1,2 @@
+module DevicemapsHelper
+end

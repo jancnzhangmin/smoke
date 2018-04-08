@@ -1,0 +1,48 @@
+<%= render 'layerbegin' %>
+<div class="page-content">
+  <div class="page-header">
+    <h1>
+      关联设备
+    </h1>
+  </div><!-- /.page-header -->
+
+  <div class="row">
+    <div class="col-xs-12">
+      <!-- PAGE CONTENT BEGINS -->
+
+      <%= form_for([@user, @user.devices.build],:html => {:class=>'form-horizontal m-t',:multipart => true}) do |f| %>
+          <h3 class="header smaller lighter blue">
+            <small></small>
+          </h3>
+          <div class="form-group">
+            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 设备SN </label>
+            <div class="col-sm-9">
+              <%= f.text_field :sn,class:"col-xs-10 col-sm-5",id:'sn' %>
+              <span  class="help-inline col-xs-12 col-sm-7" >
+												<span id="snalert" class="middle text-danger" style="display: none;"></span>
+											</span>
+            </div>
+          </div>
+
+
+
+          <div class="clearfix form-actions">
+            <div class="col-md-offset-3 col-md-9">
+              <button type="submit" name="commit" value="保存" class="btn btn-info" data-disable-with="保存" id="submit">
+                <i class="icon-ok bigger-110"></i>
+                保存
+              </button>
+            </div>
+          </div>
+      <% end %>
+
+
+
+
+    </div><!-- /.col -->
+  </div><!-- /.row -->
+</div><!-- /.page-content -->
+
+
+
+<% render 'layerend' %>

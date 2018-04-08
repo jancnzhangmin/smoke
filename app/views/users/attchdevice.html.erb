@@ -1,0 +1,174 @@
+<%= render 'layerbegin' %>
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=iOxsL9Z27dKiNtY5s4m8vRjUyZiNwZOC"></script>
+<script>
+    $(document).ready(function(){
+        var map = new BMap.Map("allmap");
+        map.centerAndZoom('昆明',18);
+        map.enableScrollWheelZoom();
+        map.enableContinuousZoom();
+        $('.coorbtn').click(function(){
+            $('#coorval').val($(this).val());
+            $('#my-modal').modal('show');
+
+        });
+
+        $('#my-modal').on('shown.bs.modal', function () {
+            map.clearOverlays();
+            var pointX = $('#coorval').val().split(',')[0];
+            var pointY = $('#coorval').val().split(',')[1];
+            map.centerAndZoom(new BMap.Point(pointX, pointY),18);
+            var marker = new BMap.Marker(new BMap.Point(pointX, pointY));
+            map.addOverlay(marker);
+        })
+
+    });
+</script>
+
+<style>
+    .btn-transparent {
+        background-color: transparent !important;
+        border-color: transparent;
+        color:#6fb3e0;
+    }
+</style>
+
+
+
+<div class="page-content">
+  <div class="page-header">
+    <h1>
+      设备列表
+    </h1>
+  </div><!-- /.page-header -->
+
+  <div class="row">
+    <div class="col-xs-12">
+      <!-- PAGE CONTENT BEGINS -->
+
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="table-responsive">
+            <table id="sample-table-1" class="table table-striped table-bordered table-hover">
+              <thead>
+              <tr>
+                <th class="text-center">设备SN</th>
+                <th class="text-center">设备名称</th>
+                <th class="text-center">型号</th>
+                <th class="text-center">地址</th>
+                <th class="text-center">坐标位置</th>
+                <th class="text-center">所在楼层</th>
+                <th class="text-center">imsi</th>
+                <th class="text-center">swver</th>
+                <th class="text-center">hwver</th>
+                <th class="text-center">电量</th>
+                <th class="text-center">最后上报</th>
+                <th class="text-center">状态</th>
+
+
+
+
+              </tr>
+              </thead>
+
+              <tbody>
+              <% @devices.each do |device| %>
+                  <tr>
+                    <td>
+                      <%= device.sn %>
+                    </td>
+                    <td>
+                      <%= device.name %>
+                    </td>
+                    <td>
+                      <%= device.model %>
+                    </td>
+                    <td>
+                      <%= device.address %>
+                    </td>
+                    <td>
+                      <%= device.coordinate %>
+                      <button class="btn btn-info btn-xs pull-right coorbtn" value=<%= device.coordinate %>>
+                        <i class="fa fa-map-marker"></i>
+                      </button>
+                    </td>
+                    <td>
+                      <%= device.floor %>
+                    </td>
+                    <td>
+                      <%= device.imsi %>
+                    </td>
+                    <td>
+                      <%= device.swver %>
+                    </td>
+                    <td>
+                      <%= device.hwver %>
+                    </td>
+                    <td>
+                      <%= device.power %>
+                    </td>
+                    <td>
+                      <% if device.timestamp %>
+                          <%= device.timestamp.strftime('%Y-%m-%d %H:%M:%S') %>
+                      <% end %>
+                    </td>
+                    <td>
+                      <% if device.status.to_s == '0' || device.status.to_s == '' %>
+                      <span class="text-success">
+                        正常
+                      </span>
+                      <% else %>
+                          <span class="text-danger">
+                        异常
+                      </span>
+                      <% end %>
+                    </td>
+
+                  </tr>
+              <% end %>
+
+
+
+
+
+
+
+
+              </tbody>
+            </table>
+            <a class="btn btn-primary pull-right" href=<%= new_user_reldevice_path(params[:id]) %>>
+              关联设备
+            </a>
+          </div><!-- /.table-responsive -->
+        </div><!-- /span -->
+      </div><!-- /row -->
+
+      <div data-turbolinks="false" class="text-center">
+        <%= will_paginate @devices, renderer: BootstrapPagination::Rails %>
+      </div>
+
+      <div id="my-modal" class="modal fade" tabindex="-1">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+              <h3 class="smaller lighter blue no-margin">坐标位置</h3><input id="coorval" class="pull-right" style="margin-top: -22px;display: none;">
+            </div>
+
+            <div class="modal-body">
+              <div id="allmap" style="width: 540px;height: 600px;"></div>
+            </div>
+
+            <div class="modal-footer">
+            </div>
+          </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+      </div>
+
+
+    </div><!-- /.col -->
+  </div><!-- /.row -->
+</div><!-- /.page-content -->
+
+
+
+<% render 'layerend' %>

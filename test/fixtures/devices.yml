@@ -1,0 +1,23 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  sn: MyString
+  model: MyString
+  coordinate: MyString
+  address: MyString
+  floor: MyString
+  power: MyString
+  powerstatu: 1
+  reportTime: 2018-04-05 08:30:54
+
+two:
+  name: MyString
+  sn: MyString
+  model: MyString
+  coordinate: MyString
+  address: MyString
+  floor: MyString
+  power: MyString
+  powerstatu: 1
+  reportTime: 2018-04-05 08:30:54

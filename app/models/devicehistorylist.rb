@@ -1,0 +1,5 @@
+class Devicehistorylist < ApplicationRecord
+
+
+
+end

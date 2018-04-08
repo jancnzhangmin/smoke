@@ -1,0 +1,60 @@
+<%= render 'layerbegin' %>
+<div class="page-content">
+  <div class="page-header">
+    <h1>
+      配置
+    </h1>
+  </div><!-- /.page-header -->
+
+  <div class="row">
+    <div class="col-xs-12">
+      <!-- PAGE CONTENT BEGINS -->
+
+      <%= form_for(@config,:html => {:class=>'form-horizontal m-t',:multipart => true}) do |f| %>
+        <h3 class="header smaller lighter blue">
+          IoT平台接口
+          <small></small>
+        </h3>
+        <div class="form-group">
+          <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> IoT地址 </label>
+          <div class="col-sm-9">
+            <%= f.text_field :ioturl,class:"col-xs-10 col-sm-5" %>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> appID </label>
+          <div class="col-sm-9">
+            <%= f.text_field :appid,class:"col-xs-10 col-sm-5" %>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> secret </label>
+          <div class="col-sm-9">
+            <%= f.text_field :secret,class:"col-xs-10 col-sm-5" %>
+          </div>
+        </div>
+
+          <div class="form-group">
+            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> 订阅回调地址 </label>
+            <div class="col-sm-9">
+              <%= f.text_field :callbackurl,class:"col-xs-10 col-sm-5" %>
+            </div>
+          </div>
+        <div class="clearfix form-actions">
+          <div class="col-md-offset-3 col-md-9">
+            <button type="submit" name="commit" value="保存" class="btn btn-info" data-disable-with="保存">
+              <i class="icon-ok bigger-110"></i>
+              保存
+            </button>
+          </div>
+        </div>
+      <% end %>
+    </div><!-- /.col -->
+  </div><!-- /.row -->
+</div><!-- /.page-content -->
+
+
+
+<% render 'layerend' %>
