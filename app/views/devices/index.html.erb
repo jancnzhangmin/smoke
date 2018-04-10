@@ -19,7 +19,7 @@
             map.centerAndZoom(new BMap.Point(pointX, pointY),18);
             var marker = new BMap.Marker(new BMap.Point(pointX, pointY));
             map.addOverlay(marker);
-        })
+        });
 
     });
 </script>
@@ -131,6 +131,10 @@
                         <a class="btn btn-xs btn-info" href=<%= device_devicehistorylists_path(device) %>>
                           <i class="fa fa-bars bigger-120"></i>
                           历史
+                        </a>
+                        <a class="btn btn-xs btn-warning" href=<%= edit_device_path(device) %>>
+                          <i class="icon-edit bigger-120"></i>
+                          编辑
                         </a>
                       </div>
 

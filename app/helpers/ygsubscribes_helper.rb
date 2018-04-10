@@ -1,0 +1,2 @@
+module YgsubscribesHelper
+end

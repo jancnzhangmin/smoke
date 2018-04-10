@@ -39,4 +39,7 @@ Rails.application.routes.draw do
     end
     resources :reldevices
   end
+
+  post '/', to: 'ygsubscribes#create'
+
 end
