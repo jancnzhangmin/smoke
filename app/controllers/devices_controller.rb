@@ -1,8 +1,26 @@
 class DevicesController < ApplicationController
-
+  before_action {checkauth 'device_device'}
   before_action :set_device, only: [:show, :edit, :update, :destroy, :refreshdevice]
   def index
     @devices = Device.all.order('id desc').paginate(:page => params[:page], :per_page => 15)
+    if params[:devicename]
+      @devices = Device.where('sn like ? or address like ? or imsi like ?',"%#{params[:devicename]}%","%#{params[:devicename]}%","%#{params[:devicename]}%")
+    end
+    normal = 0
+    abnormal = 0
+    lost = -1
+    if !params[:normal] || params[:normal] == '1'
+      normal = 0
+    end
+    if !params[:abnormal] || params[:abnormal] == '1'
+      abnormal = 1
+    end
+    @devices = @devices.where('status in (?)',[normal,abnormal])
+    if params[:lost] == 1
+      @devices = @devices.where('timestamp < ?',Time.now - 1.days)
+    end
+
+    @devices = @devices.paginate(:page => params[:page], :per_page => 15)
   end
 
   def edit

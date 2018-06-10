@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-
+  before_action {checkauth 'user_user'}
   before_action :set_user, only: [:show, :edit, :update, :destroy, :refreshdevice]
   def index
     @users = User.all.order('id desc').paginate(:page => params[:page], :per_page => 15)
@@ -62,7 +62,6 @@ class UsersController < ApplicationController
   def reldevice
     @user = User.find(params[:id])
   end
-
 
   private
 # Use callbacks to share common setup or constraints between actions.

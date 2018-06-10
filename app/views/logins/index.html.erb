@@ -1,0 +1,93 @@
+<style>
+
+
+
+    .form{
+        align-items: center;
+        background: rgba(255,255,255,0.4);
+        padding: 20px;
+        padding-left: 80px;
+        padding-right: 80px;
+        border-radius: 5px;
+    }
+
+</style>
+
+<script>
+    $(document).ready(function(){
+        $('#rucapimg').click(function(){
+            var src = this.src;
+            this.src=src;
+        });
+    });
+
+</script>
+
+
+
+<div class="container position-relative login-box visible widget-box no-border" style="margin-top: 200px;">
+
+  <%= form_for(:login, url: logins_path,remote: true,:html => {:class=>'col-sm-offset-6 col-sm-6  form form-horizontal'}) do |f| %>
+
+      <h3 class="text-center">用户登录</h3>
+
+      <div class="col-md-12">
+        <label class="block clearfix">
+      <span class="block input-icon ">
+
+        <%= f.text_field :login ,class:"form-control",placeholder:"用户名"%>
+        <i class="icon-user"></i>
+      </span>
+        </label>
+      </div>
+
+      <div class="col-md-12">
+        <label class="block clearfix">
+    	<span class="block input-icon ">
+
+          <%= f.password_field :password ,class:"form-control",placeholder:"密码" %>
+          <i class="icon-lock"></i>
+		</span>
+        </label>
+      </div>
+      <div class="col-md-12">
+        <label class="block clearfix">
+    	<span class="block input-icon">
+<table width="100%">
+  <tr>
+    <td width="70%">
+      <%= rucaptcha_input_tag(class: 'form-control', placeholder: '输入验证码') %>
+    </td>
+    <td width="30%" align="right">
+      <%= rucaptcha_image_tag('height':'35',id:'rucapimg') %>
+    </td>
+  </tr>
+
+</table>
+		</span>
+
+
+
+        </label>
+
+        <div class="alert alert-danger" id="messagediv" style="display: none;">
+          <strong>
+            <i class="icon-warning-sign"></i>
+          </strong>
+          <span id="messagespan"></span>
+          <br />
+        </div>
+      </div>
+
+      &nbsp;<br/>
+      <div class="col-md-12 " data-turbolinks="false">
+        <!--<a href="#"><span>忘记密码</span></a>-->
+        <button type="submit" class="width-35 pull-right btn btn-sm btn-primary">登录</button>
+      </div>
+
+  <% end %>
+
+
+
+</div>
+

@@ -1,4 +1,5 @@
 class SubscribedevicesController < ApplicationController
+  before_action {checkauth 'device_subscribe'}
   before_action :set_config, only: [:show, :edit, :update, :destroy]
   def new
     @subscribedevice = Device.new

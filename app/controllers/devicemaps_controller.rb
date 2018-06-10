@@ -1,4 +1,5 @@
 class DevicemapsController < ApplicationController
+  before_action {checkauth 'device_map'}
   def index
 
   end

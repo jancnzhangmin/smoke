@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  root 'logins#index'
+  resources :mytests
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
   root 'devices#index'
 
@@ -10,7 +12,7 @@ Rails.application.routes.draw do
   end
   resources :tests do
     collection do
-      post 'test'
+      get 'test'
     end
   end
   resources :configs
@@ -38,8 +40,56 @@ Rails.application.routes.draw do
       get 'reldevice'
     end
     resources :reldevices
+    resources :userdevides
+  end
+  resources :getopenids do
+    collection do
+      get 'getopenid'
+    end
   end
 
   post '/', to: 'ygsubscribes#create'
+
+  resources :apis do
+    collection do
+      get 'sign'
+      get 'checkuserauth'
+      get 'getuserinfo'
+      get 'sendvercode'
+      get 'bindphone'
+      get 'changealertsms'
+      get 'changealertswx'
+      get 'checkdevice'
+      get 'subscribedevice'
+      get 'getdevicelist'
+      get 'getsingledevice'
+      get 'getuserdevicehisory'
+      get 'binduser'
+      get 'getchildrenuser'
+      get 'getattchuserdetail'
+      get 'getuserdevicelist'
+      get 'bindattchuserdevice'
+      get 'removedevice'
+      get 'getdevicehistroydetail'
+      get 'getcanbingdevicelist'
+      get 'deletedevice'
+      get 'getdevicebysn'
+    end
+  end
+  resources :logins
+  resources :admins do
+    collection do
+      get 'checkuser'
+      get 'setauth'
+    end
+    member do
+      get 'auth'
+      post 'setauth'
+    end
+  end
+  resources :roles
+  resources :modifypwds
+  resources :noauths
+
 
 end

@@ -25,7 +25,9 @@
 //= require flot/jquery.flot.min
 //= require flot/jquery.flot.pie.min
 //= require flot/jquery.flot.resize.min
+//= require jquery.validate.min
+//= require chosen.jquery.min
 //= require ace-elements.min
 //= require ace.min
-//= require chosen.jquery.min
+
 // require_tree .

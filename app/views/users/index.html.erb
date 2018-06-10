@@ -24,7 +24,7 @@
                 <th class="text-center">状态</th>
                 <th class="text-center">附属用户</th>
                 <th class="text-center">关联设备</th>
-                <th class="text-center">操作</th>
+
 
 
 
@@ -40,52 +40,37 @@
                     <td>
                       <%= user.openid %>
                     </td>
-                    <td>
+                    <td class="text-center">
                       <img src=<%= user.headurl %> width='40'>
-
                     </td>
                     <td>
                       <%= user.phone %>
                     </td>
                     <td>
-
                       <% if user.sex == 1%>
-
-                        男
-
-                          <% else %>
-
-                        女
-
+                          男
+                      <% elsif user.sex ==2 %>
+                          女
                       <% end %>
                     </td>
                     <td>
 
                       <% if user.status == 1%>
-                                            <span class="text-success">
+                      <span class="text-success">
                         正常
                       </span>
                       <% else %>
-                                                                  <span class="text-danger">
+                      <span class="text-danger">
                         停用
                       </span>
                       <% end %>
 
                     </td>
                     <td>
-                      <a  href=<%= attchuser_user_path(user) %>>
-                        <%= user.childrens.count %>
-                      </a>
-
+                      <%= link_to user.childrens.count,attchuser_user_path(user),class:'btn btn-primary btn-xs' %>
                     </td>
                     <td>
-                      <a  href=<%= attchdevice_user_path(user) %>>
-                        <%= user.devices.count %>
-                      </a>
-                    </td>
-                    <td>
-
-
+                      <%= link_to user.devices.count,attchdevice_user_path(user),class:'btn btn-primary btn-xs' %>
                     </td>
                   </tr>
               <% end %>

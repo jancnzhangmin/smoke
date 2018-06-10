@@ -22,16 +22,97 @@
                   var pointX = item.coordinate.split(',')[0];
                   var pointY = item.coordinate.split(',')[1];
                   var point = new BMap.Point(pointX,pointY);
-                  var marker = new BMap.Marker(point);
+                  var img = "baidumarker/normal.png";
+                  var devicecolor = '#428bca';
+                  var devicestatus = '正常';
+                  if(item.status == 1){
+                      img = "baidumarker/abnormal.png";
+                      devicecolor = '#d15b47';
+                      devicestatus = '异常';
+                  }
+                  temdatetime = new Date();
+                  if(parseInt(temdatetime - new Date(item.timestamp)) > 1000 * 3600 *24){
+                      img = "baidumarker/lost.png";
+                      devicecolor = '#ffb752';
+                      devicestatus = '失联';
+                  }
+                  //debugger;
+                  var myIcon = new BMap.Icon(img, new BMap.Size(23, 25), {
+                      // 指定定位位置。
+                      // 当标注显示在地图上时，其所指向的地理位置距离图标左上
+                      // 角各偏移10像素和25像素。您可以看到在本例中该位置即是
+                      // 图标中央下端的尖角位置。
+                      anchor: new BMap.Size(11, 25)
+                      // 设置图片偏移。
+                      // 当您需要从一幅较大的图片中截取某部分作为标注图标时，您
+                      // 需要指定大图的偏移位置，此做法与css sprites技术类似。
+                  });
+                  var marker = new BMap.Marker(point,{icon: myIcon});
                   map.addOverlay(marker);
+                  var opts = {
+                      position : point,    // 指定文本标注所在的地理位置
+                      offset   : new BMap.Size(10, -22)    //设置文本偏移量
+                  };
+                  var label = new BMap.Label(item.sn, opts);  // 创建文本标注对象
+                  label.setStyle({
+                      color : devicecolor,
+                      'border-color':devicecolor,
+                      fontSize : "12px",
+                      height : "20px",
+                      lineHeight : "20px",
+                      fontFamily:"微软雅黑"
+                  });
+                  map.addOverlay(label);
+
+
+                  var content = '&nbsp;&nbsp;&nbsp;设备sn：'+ item.sn + '<br/>' + '设备名称：' + item.name + '<br/>'
+                  + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;型号：' + item.model + '<br/>' + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;地址：' + item.address + '<br/>'
+                  + '所在楼层：' + item.floor + '<br/>' + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;imsi：' + item.imsi + '<br/>' + '&nbsp;&nbsp;&nbsp;&nbsp;swver：' + item.swver +'<br/>'
+                  + '&nbsp;&nbsp;&nbsp;&nbsp;hwver：' + item.hwver + '<br/>' + '最后上报：' + new Date(item.timestamp).Format("yyyy-MM-dd HH:mm:ss") + '<br/>'
+                  + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;状态：' + '<span style = "color:' + devicecolor + ';">' + devicestatus + '</span>'
+
+                  addClickHandler(content,marker);
               });
+              var infoopts = {
+                  width : 300,     // 信息窗口宽度
+                  height: 220,     // 信息窗口高度
+                  title : "" , // 信息窗口标题
+                  enableMessage:true//设置允许信息窗发送短息
+              };
+              function addClickHandler(content,marker){
+                  marker.addEventListener("click",function(e){
+                              openInfo(content,e)}
+                  );
+              }
+              function openInfo(content,e){
+                  var p = e.target;
+                  var point = new BMap.Point(p.getPosition().lng, p.getPosition().lat);
+                  var infoWindow = new BMap.InfoWindow(content,infoopts);  // 创建信息窗口对象
+                  map.openInfoWindow(infoWindow,point); //开启信息窗口
+              }
 
           }
       });
 
 
-  });
 
+
+  });
+  Date.prototype.Format = function (fmt) { //author: meizz
+      var o = {
+          "M+": this.getMonth() + 1, //月份
+          "d+": this.getDate(), //日
+          "H+": this.getHours(), //小时
+          "m+": this.getMinutes(), //分
+          "s+": this.getSeconds(), //秒
+          "q+": Math.floor((this.getMonth() + 3) / 3), //季度
+          "S": this.getMilliseconds() //毫秒
+      };
+      if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+      for (var k in o)
+          if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+      return fmt;
+  }
 
 
 </script>

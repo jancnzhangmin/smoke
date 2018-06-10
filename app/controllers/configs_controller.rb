@@ -1,5 +1,5 @@
 class ConfigsController < ApplicationController
-
+ before_action {checkauth 'system_config'}
   before_action :set_config, only: [:show, :edit, :update, :destroy]
   def index
     #checksubscribe('aaa')
@@ -29,6 +29,7 @@ class ConfigsController < ApplicationController
   def update
     respond_to do |format|
       if @config.update(config_params)
+        subscribe
         format.html { redirect_to edit_config_path(@config), notice: 'User was successfully updated.' }
         format.json { render :show, status: :ok, location: @config }
       else

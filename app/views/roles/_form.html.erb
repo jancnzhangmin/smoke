@@ -1,0 +1,167 @@
+<script>
+    $(document).ready(function(){
+        var role = '';
+        $('#commit').click(function(){
+            $.each($('.ace'),function(i,item){
+               if(item.checked){
+                   role += item.id +':';
+               }
+            });
+            $('#role_role').val(role);
+        });
+
+        rolearr = $('#role_role').val().split(':');
+        $.each(rolearr,function(i,item){
+            if(item.length > 0) {
+                var el = document.getElementById(item);
+                el.checked = true;
+            }
+        });
+
+    });
+</script>
+
+
+
+
+<div class="row">
+  <div class="col-xs-12">
+    <!-- PAGE CONTENT BEGINS -->
+
+    <%= form_with(model:role,local:true,id:'validation-form',:html => {:class=>'form-horizontal m-t',:multipart => true}) do |f| %>
+
+        <div class="form-group">
+          <label class="control-label col-xs-12 col-sm-3 no-padding-right"> 角名名称 </label>
+          <div class="col-xs-12 col-sm-9">
+            <div class="clearfix">
+              <%= f.text_field :name,id: :role_rname,class:"col-xs-12 col-sm-5" %>
+              <%= f.hidden_field :role,id: :role_role,class:"col-xs-12 col-sm-5" %>
+            </div>
+          </div>
+        </div>
+        <hr class="hr dotted" />
+
+        <div class="row">
+          <div class="col-xs-12 col-sm-offset-3 col-sm-5">
+            <div class="control-group">
+              <label class="control-label bolder blue">系统</label>
+              <table width="100%">
+                <tr>
+                  <td width="25%">
+                    <div class="checkbox">
+                      <label>
+                        <input name="form-field-checkbox" id="system_config" type="checkbox" class="ace" />
+                        <span class="lbl"> 平台设置</span>
+                      </label>
+                    </div>
+                  </td>
+                  <td width="25%">
+                    <div class="checkbox">
+                      <label>
+                        <input name="form-field-checkbox" id="system_message" type="checkbox" class="ace" />
+                        <span class="lbl"> 短信设置</span>
+                      </label>
+                    </div>
+                  </td>
+                  <td width="25%">
+                    <div class="checkbox">
+                      <label>
+                        <input name="form-field-checkbox" id="system_admin" type="checkbox" class="ace" />
+                        <span class="lbl"> 管理员</span>
+                      </label>
+                    </div>
+                  </td>
+                  <td width="25%">
+                    <div class="checkbox">
+                      <label>
+                        <input name="form-field-checkbox" id="system_role" type="checkbox" class="ace" />
+                        <span class="lbl"> 管理角色</span>
+                      </label>
+                    </div>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </div>
+<br/>
+        <div class="row">
+          <div class="col-xs-12 col-sm-offset-3 col-sm-5">
+            <div class="control-group">
+              <label class="control-label bolder blue">设备</label>
+              <table width="100%">
+                <tr>
+                  <td width="25%">
+                    <div class="checkbox">
+                      <label>
+                        <input name="form-field-checkbox" id="device_device" type="checkbox" class="ace" />
+                        <span class="lbl"> 设备列表</span>
+                      </label>
+                    </div>
+                  </td>
+                  <td width="25%">
+                    <div class="checkbox">
+                      <label>
+                        <input name="form-field-checkbox" id="device_map" type="checkbox" class="ace" />
+                        <span class="lbl"> 设备地图</span>
+                      </label>
+                    </div>
+                  </td>
+                  <td width="25%">
+                    <div class="checkbox">
+                      <label>
+                        <input name="form-field-checkbox" id="device_subscribe" type="checkbox" class="ace" />
+                        <span class="lbl"> 订阅设备</span>
+                      </label>
+                    </div>
+                  </td>
+                  <td width="25%">
+
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </div>
+<br/>
+        <div class="row">
+          <div class="col-xs-12 col-sm-offset-3 col-sm-5">
+            <div class="control-group">
+              <label class="control-label bolder blue">用户</label>
+              <table width="100%">
+                <tr>
+                  <td width="25%">
+                    <div class="checkbox">
+                      <label>
+                        <input name="form-field-checkbox" id="user_user" type="checkbox" class="ace" />
+                        <span class="lbl"> 用户</span>
+                      </label>
+                    </div>
+                  </td>
+                  <td width="25%">
+
+                  </td>
+                  <td width="25%">
+
+                  </td>
+                  <td width="25%">
+
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </div>
+        <hr class="hr dotted" />
+
+        <div class="clearfix form-actions">
+          <div class="col-md-offset-3 col-md-9">
+            <button type="submit" id="commit" value="保存" class="btn btn-info" data-disable-with="保存">
+              <i class="icon-ok bigger-110"></i>
+              保存
+            </button>
+          </div>
+        </div>
+    <% end %>
+  </div><!-- /.col -->
+</div><!-- /.row -->

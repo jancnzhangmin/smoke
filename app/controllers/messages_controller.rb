@@ -1,8 +1,11 @@
 class MessagesController < ApplicationController
+  before_action {checkauth 'system_message'}
   before_action :set_message, only: [:show, :edit, :update, :destroy]
   def index
-    @message = Message.first
-    redirect_to edit_message_path(@message)
+    @messages = Message.all
+
+    #@message = Message.first
+    #redirect_to edit_message_path(@message)
   end
 
   def edit
@@ -10,9 +13,18 @@ class MessagesController < ApplicationController
   end
 
   def update
+    messages = Message.all
+    messages.each do |f|
+      if f.isdefault == 1
+        f.isdefault = 0
+        f.save
+      end
+    end
     respond_to do |format|
       if @message.update(message_params)
-        format.html { redirect_to edit_message_path(@message), notice: 'User was successfully updated.' }
+        @message.isdefault = 1
+        @message.save
+        format.html { redirect_to messages_path, notice: 'User was successfully updated.' }
         format.json { render :show, status: :ok, location: @message }
       else
         format.html { render :edit }
@@ -29,7 +41,7 @@ class MessagesController < ApplicationController
 
 # Never trust parameters from the scary internet, only allow the white list through.
   def message_params
-    params.require(:message).permit(:appkey, :secret)
+    params.require(:message).permit(:appkey, :secret, :accountsid, :auth_token, :appid, :isdefault, :keyword, :name)
   end
 
 end

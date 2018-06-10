@@ -63,10 +63,7 @@
                 <th class="text-center">电量</th>
                 <th class="text-center">最后上报</th>
                 <th class="text-center">状态</th>
-
-
-
-
+                <th class="text-center">操作</th>
               </tr>
               </thead>
 
@@ -121,6 +118,12 @@
                         异常
                       </span>
                       <% end %>
+                    </td>
+                    <td>
+                      <a class="btn btn-xs btn-danger" data-confirm="确认将此设备解绑?" data-method="delete" href=<%= user_userdevide_path(device) %>>
+                        <i class="icon-trash bigger-120"></i>
+                        解绑
+                      </a>
                     </td>
 
                   </tr>

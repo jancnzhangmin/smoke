@@ -1,0 +1,49 @@
+<%= render 'layerbegin' %>
+
+<script>
+  $(document).ready(function(){
+     $('#back').click(function(){
+         history.back();
+     }) ;
+  });
+</script>
+
+<div class="page-content">
+  <div class="row">
+    <div class="col-xs-12">
+      <!-- PAGE CONTENT BEGINS -->
+
+      <div class="error-container">
+        <div class="well">
+          <h1 class="grey lighter smaller">
+											<span class="blue bigger-125">
+												<i class="icon-sitemap"></i>
+												无操作权限
+											</span>
+
+          </h1>
+
+          <hr />
+          <h3 class="lighter smaller">请联系管理员</h3>
+
+
+
+          <hr />
+          <div class="space"></div>
+
+          <div class="center">
+            <a id="back" href="#" class="btn btn-grey">
+              <i class="icon-arrow-left"></i>
+              Go Back
+            </a>
+
+
+          </div>
+        </div>
+      </div><!-- PAGE CONTENT ENDS -->
+    </div><!-- /.col -->
+  </div><!-- /.row -->
+</div><!-- /.page-content -->
+</div><!-- /.main-content -->
+
+<%= render 'layerend' %>

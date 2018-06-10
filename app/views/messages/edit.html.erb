@@ -2,44 +2,118 @@
 <div class="page-content">
   <div class="page-header">
     <h1>
-      配置
+      <%= @message.name %>配置
     </h1>
   </div><!-- /.page-header -->
+  <script>
+      $(document).ready(function(){
+
+
+      });
+  </script>
+
+
+
 
   <div class="row">
     <div class="col-xs-12">
       <!-- PAGE CONTENT BEGINS -->
 
-      <%= form_for(@message,:html => {:class=>'form-horizontal m-t',:multipart => true}) do |f| %>
-        <h3 class="header smaller lighter blue">
-          短信配置
-          <small></small>
-        </h3>
-        <div class="form-group">
-          <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> app_key </label>
-          <div class="col-sm-9">
-            <%= f.text_field :appkey,class:"col-xs-10 col-sm-5" %>
-          </div>
-        </div>
+      <%= form_with(model:@message,local:true,id:'validation-form',:html => {:class=>'form-horizontal m-t',:multipart => true}) do |f| %>
 
-        <div class="form-group">
-          <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> app_secret </label>
-          <div class="col-sm-9">
-            <%= f.text_field :secret,class:"col-xs-10 col-sm-5" %>
+          <div class="form-group">
+            <label class="control-label col-xs-12 col-sm-3 no-padding-right"> 平台名称 </label>
+            <div class="col-xs-12 col-sm-9">
+              <div class="clearfix">
+                <%= f.text_field :name,id: :message_name,class:"col-xs-12 col-sm-5",'readonly':'true' %>
+              </div>
+            </div>
           </div>
-        </div>
 
-        <div class="clearfix form-actions">
-          <div class="col-md-offset-3 col-md-9">
-            <button type="submit" name="commit" value="保存" class="btn btn-info" data-disable-with="保存">
-              <i class="icon-ok bigger-110"></i>
-              保存
-            </button>
+          <div class="form-group">
+            <label class="control-label col-xs-12 col-sm-3 no-padding-right"> 关键字 </label>
+            <div class="col-xs-12 col-sm-9">
+              <div class="clearfix">
+                <%= f.text_field :keyword,id: :message_keyword,class:"col-xs-12 col-sm-5",'readonly':'true' %>
+              </div>
+            </div>
           </div>
-        </div>
+
+          <% if @message.keyword == 'cloudfeng' %>
+
+          <div class="form-group">
+            <label class="control-label col-xs-12 col-sm-3 no-padding-right"> appkey </label>
+            <div class="col-xs-12 col-sm-9">
+              <div class="clearfix">
+                <%= f.text_field :appkey,id: :message_appkey,class:"col-xs-12 col-sm-5" %>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="control-label col-xs-12 col-sm-3 no-padding-right"> secret </label>
+            <div class="col-xs-12 col-sm-9">
+              <div class="clearfix">
+                <%= f.text_field :secret,id: :message_secret,class:"col-xs-12 col-sm-5" %>
+              </div>
+            </div>
+          </div>
+
+              <% else %>
+
+          <div class="form-group">
+            <label class="control-label col-xs-12 col-sm-3 no-padding-right"> accountSid </label>
+            <div class="col-xs-12 col-sm-9">
+              <div class="clearfix">
+                <%= f.text_field :accountsid,id: :message_accountsid,class:"col-xs-12 col-sm-5" %>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="control-label col-xs-12 col-sm-3 no-padding-right"> auth_token </label>
+            <div class="col-xs-12 col-sm-9">
+              <div class="clearfix">
+                <%= f.text_field :auth_token,id: :message_auth_token,class:"col-xs-12 col-sm-5" %>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="control-label col-xs-12 col-sm-3 no-padding-right"> appid </label>
+            <div class="col-xs-12 col-sm-9">
+              <div class="clearfix">
+                <%= f.text_field :appid,id: :message_appid,class:"col-xs-12 col-sm-5" %>
+              </div>
+            </div>
+          </div>
+
+              <% end %>
+
+          <div class="form-group">
+            <label class="control-label col-xs-12 col-sm-3 no-padding-right"> 默认启用 </label>
+            <div class="col-xs-12 col-sm-9">
+              <div class="clearfix checkbox" style="padding-top: 0px;padding-left: 0px;">
+                <label>
+                  <%= f.check_box :isdefault,id: :message_isdefault,class:"ace" %>
+                  <span class="lbl"></span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div class="clearfix form-actions">
+            <div class="col-md-offset-3 col-md-9">
+              <button type="submit" id="commit" value="保存" class="btn btn-info" data-disable-with="保存">
+                <i class="icon-ok bigger-110"></i>
+                保存
+              </button>
+            </div>
+          </div>
       <% end %>
     </div><!-- /.col -->
   </div><!-- /.row -->
+
 </div><!-- /.page-content -->
 
 

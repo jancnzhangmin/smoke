@@ -10,13 +10,27 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180408062028) do
+ActiveRecord::Schema.define(version: 20180609085209) do
 
   create_table "accesstokens", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.text "access_token"
     t.datetime "exptime"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "admins", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string "username"
+    t.string "login"
+    t.string "password_digest"
+    t.integer "status"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "admins_roles", id: false, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.bigint "admin_id", null: false
+    t.bigint "role_id", null: false
   end
 
   create_table "configs", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -45,6 +59,12 @@ ActiveRecord::Schema.define(version: 20180408062028) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "devicelogs", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string "sn"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "devices", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "name"
     t.string "sn"
@@ -64,6 +84,7 @@ ActiveRecord::Schema.define(version: 20180408062028) do
     t.string "hwver"
     t.float "vol", limit: 24
     t.integer "user_id"
+    t.integer "deleteflag"
   end
 
   create_table "devices_users", id: false, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -76,10 +97,29 @@ ActiveRecord::Schema.define(version: 20180408062028) do
     t.string "secret"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "accountsid"
+    t.string "auth_token"
+    t.string "appid"
+    t.integer "isdefault"
+    t.string "keyword"
+    t.string "name"
   end
 
   create_table "mylogs", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.text "log"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "mytests", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string "test"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "roles", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string "name"
+    t.text "role"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -95,6 +135,10 @@ ActiveRecord::Schema.define(version: 20180408062028) do
     t.datetime "updated_at", null: false
     t.integer "device_id"
     t.string "nickname"
+    t.integer "alertsms"
+    t.integer "alertwx"
+    t.string "vercode"
+    t.datetime "vertime"
   end
 
 end

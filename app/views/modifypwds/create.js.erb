@@ -1,0 +1,12 @@
+if('<%= @status %>' == 0){
+    $('#alertdiv').removeClass('alert-success');
+    $('#alertdiv').addClass('alert-danger');
+    $('#alertspan').text('<%= @message %>');
+    $('#alertdiv').show();
+}else{
+    $('#alertdiv').removeClass('alert-danger');
+    $('#alertdiv').addClass('alert-success');
+    $('#alertspan').text('<%= @message %>');
+    $('#commit').addClass('disabled');
+    $('#alertdiv').show();
+}

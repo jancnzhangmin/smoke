@@ -1,0 +1,2 @@
+class Devicelog < ApplicationRecord
+end

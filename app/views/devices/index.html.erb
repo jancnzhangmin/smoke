@@ -21,7 +21,81 @@
             map.addOverlay(marker);
         });
 
+        var devicename ='';
+        var normal = 1;
+        var abnormal = 1;
+        var lost = 1;
+
+        if(getUrlParam('devicename')){
+            $('#devicename').val(getUrlParam('devicename'));
+            devicename = getUrlParam('devicename');
+        }
+
+        if(!getUrlParam('normal') || getUrlParam('normal') == '1'){
+            $('#normal').attr('checked',true);
+            normal = 1;
+        }else{
+            $('#normal').attr('checked',false);
+            normal = 0;
+        }
+
+        if(!getUrlParam('abnormal') || getUrlParam('abnormal') == '1'){
+            $('#abnormal').attr('checked',true);
+            abnormal = 1;
+        }else{
+            $('#abnormal').attr('checked',false);
+            abnormal = 0;
+        }
+
+        if(!getUrlParam('lost') || getUrlParam('lost') == '1'){
+            $('#lost').attr('checked',true);
+            lost = 1;
+        }else{
+            $('#lost').attr('checked',false);
+            lost = 0;
+        }
+
+
+        $('#normal').change(function(){
+            if($('#normal').prop('checked')){
+                normal = 1;
+            }else{
+                normal = 0;
+            }
+        });
+
+        $('#abnormal').change(function(){
+            if($('#abnormal').prop('checked')){
+                abnormal = 1;
+            }else{
+                abnormal = 0;
+            }
+        });
+
+        $('#lost').change(function(){
+            if($('#lost').prop('checked')){
+                lost = 1;
+            }else{
+                lost = 0;
+            }
+        });
+
+        $('#searchbtn').click(function(){
+            devicename = $('#devicename').val();
+            window.location.href = window.location.href.split('?')[0] + '?' + 'devicename=' + devicename + '&normal=' + normal + '&abnormal=' + abnormal + '&lost=' + lost;
+        });
+
+
+
+
     });
+
+    function getUrlParam(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+        var r = window.location.search.substr(1).match(reg);  //匹配目标参数
+        if (r != null) return unescape(r[2]); return null; //返回参数值
+    }
+
 </script>
 
 <style>
@@ -32,6 +106,60 @@
     }
 </style>
 
+
+<div class="breadcrumbs" id="breadcrumbs" style="line-height: 0px;">
+  <ul class="breadcrumb" style="line-height: 0px;">
+    <li style="padding-top: 0px;">
+
+      <table>
+        <tr>
+          <td>
+            <span>名称</span>
+								<span class="input-icon">
+									<input type="text" placeholder="sn 地址 imsi" class="input-xlarge" id="devicename" autocomplete="off" />
+								</span>
+          </td>
+          <td>
+            <div class="checkbox" style="padding-top: 3px;">
+              <label>
+                <input id="normal" name="form-field-checkbox" checked="" type="checkbox" class="ace" />
+                <span class="lbl" style="line-height: 0px;"> 正常 </span>
+              </label>
+            </div>
+          </td>
+          <td>
+            <div class="checkbox" style="padding-top: 3px;">
+              <label>
+                <input id="abnormal" name="form-field-checkbox" checked="" type="checkbox" class="ace" />
+                <span class="lbl" style="line-height: 0px;"> 异常 </span>
+              </label>
+            </div>
+          </td>
+          <td>
+            <div class="checkbox" style="padding-top: 3px;">
+              <label>
+                <input id="lost" name="form-field-checkbox" checked="" type="checkbox" class="ace" />
+                <span class="lbl" style="line-height: 0px;"> 失联 </span>
+              </label>
+            </div>
+          </td>
+          <td>
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            <button id="searchbtn" class="btn btn-info btn-xs">
+              <i class="icon-search  bigger-110 icon-only"></i>
+            </button>
+          </td>
+        </tr>
+      </table>
+
+
+
+
+
+    </li>
+  </ul><!-- .breadcrumb -->
+
+</div>
 
 
 <div class="page-content">
@@ -112,14 +240,20 @@
                       <% end %>
                     </td>
                     <td>
-                      <% if device.status.to_s == '0' || device.status.to_s == '' %>
+                      <% if device.timestamp > Time.now - 1.days %>
+                          <% if device.status.to_s == '0' || device.status.to_s == '' %>
                       <span class="text-success">
                         正常
                       </span>
-                      <% else %>
+                          <% else %>
                           <span class="text-danger">
                         异常
                       </span>
+                          <% end %>
+                      <% else %>
+                        <span class="text-warning">
+                        失联
+                        </span>
                       <% end %>
                     </td>
                     <td>
