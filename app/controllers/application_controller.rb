@@ -91,7 +91,7 @@ class ApplicationController < ActionController::Base
     attr :power,true
   end
 
-  def subscribe
+  def subscribe #订阅设备
     conn = Faraday.new(:url => Config.first.ioturl) do |faraday|
       faraday.request :url_encoded # form-encode POST params
       faraday.response :logger # log requests to STDOUT

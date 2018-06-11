@@ -1,6 +1,6 @@
 class ApisController < ApplicationController
 
-  def checkuserauth
+  def checkuserauth #获取用户微信信息
     $client ||= WeixinAuthorize::Client.new("wx771002724b047b26", "f10556ba5c87e8091711ab88b70930c9")
     status = 0 #0用户已禁用 1正常用户 2具备管理权限
     user = User.find_by_openid(params[:openid])
@@ -25,7 +25,7 @@ class ApisController < ApplicationController
     render json: params[:callback]+'({"status":'+ status.to_s + '})',content_type: "application/javascript"
   end
 
-  def getuserinfo
+  def getuserinfo #获取用户基本信息
     user = User.find_by_openid(params[:openid])
     attchusercount = user.childrens.count
     render json: params[:callback]+'({"user":'+ user.to_json + ',"usercount":' + attchusercount.to_s + '})',content_type: "application/javascript"
@@ -37,14 +37,14 @@ class ApisController < ApplicationController
     render json: params[:callback]+'('+ sign_package.to_json + ')',content_type: "application/javascript"
   end
 
-  def sendvercode
+  def sendvercode #发送验证码
     sendsms(params[:openid],params[:phone])
     render json: params[:callback]+'({"status":"200"})',content_type: "application/javascript"
   end
 
 
 
-  def bindphone
+  def bindphone #绑定手机
     status = 0 #0验证码错误或超时 1成功
     user = User.find_by_openid(params[:openid])
     if user.vercode == params[:vercode] && user.vertime < Time.now + 15.minutes
@@ -55,27 +55,27 @@ class ApisController < ApplicationController
     render json: params[:callback]+'({"status":'+ status.to_s + '})',content_type: "application/javascript"
   end
 
-  def changealertsms
+  def changealertsms #是否接收短信报警
     user = User.find_by_openid(params[:openid])
     user.alertsms = params[:status]
     user.save
     render json: params[:callback]+'({"status":"200"})',content_type: "application/javascript"
   end
 
-  def changealertswx
+  def changealertswx #是否接收微信报警
     user = User.find_by_openid(params[:openid])
     user.alertwx = params[:status]
     user.save
     render json: params[:callback]+'({"status":"200"})',content_type: "application/javascript"
   end
 
-  def checkdevice
+  def checkdevice #检查设备是否注册
     check = checksubscribe(params[:sn])
 
     render json: params[:callback]+'({"status":'+ check.to_s + '})',content_type: "application/javascript"
   end
 
-  def subscribedevice
+  def subscribedevice #注册设备
     device = Device.find_by_sn(params[:sn])
     if device
       device.model = params[:model]
@@ -93,13 +93,13 @@ class ApisController < ApplicationController
     render json: params[:callback]+'({"status":"200"})',content_type: "application/javascript"
   end
 
-  def getdevicelist
+  def getdevicelist #获取设备历史
     user = User.find_by_openid(params[:openid])
     devices = user.devices.order('id desc')
     render json: params[:callback]+'({"devices":'+ devices.to_json + '})',content_type: "application/javascript"
   end
 
-  def getcanbingdevicelist
+  def getcanbingdevicelist #用户可绑定设备
     user = User.find_by_openid(params[:openid])
     attchdeviceids = User.find(params[:userid]).devices.ids
     attchdeviceids.push 0
@@ -107,17 +107,17 @@ class ApisController < ApplicationController
     render json: params[:callback]+'({"devices":'+ devices.to_json + '})',content_type: "application/javascript"
   end
 
-  def getsingledevice
+  def getsingledevice #获取单设备信息
     device = Device.find(params[:id])
     render json: params[:callback]+'({"device":'+ device.to_json + '})',content_type: "application/javascript"
   end
 
-  def getuserdevicehisory
+  def getuserdevicehisory #获取单设备历史
     devicehistroy = Devicehistorylist.where('sn = ?',params[:sn]).order('id desc')
     render json: params[:callback]+'({"devicehistroy":'+ devicehistroy.to_json + '})',content_type: "application/javascript"
   end
 
-  def binduser
+  def binduser #绑定附属用户
     status = 0
     childrenuser = User.find_by_phone(params[:phone])
     if childrenuser
@@ -145,7 +145,7 @@ class ApisController < ApplicationController
     attr :devicecount,true
   end
 
-  def getchildrenuser
+  def getchildrenuser #获取附属用户
     user = User.find_by_openid(params[:openid])
     childrenuser = user.childrens
     userarr = Array.new
@@ -177,7 +177,7 @@ class ApisController < ApplicationController
     render json: params[:callback]+'({"devices":'+ devices.to_json + '})',content_type: "application/javascript"
   end
 
-  def bindattchuserdevice
+  def bindattchuserdevice #绑定用户设备
     user = User.find_by_id(params[:id])
     devices = Device.where('id in (?)',params[:deviceid])
     devices.each do |f|
@@ -186,19 +186,19 @@ class ApisController < ApplicationController
     render json: params[:callback]+'({"status":"200"})',content_type: "application/javascript"
   end
 
-  def removedevice
+  def removedevice #移除附属用户设备绑定
     user = User.find(params[:userid])
     device = Device.find(params[:deviceid])
     user.devices.destroy(device)
     render json: params[:callback]+'({"status":"200"})',content_type: "application/javascript"
   end
 
-  def getdevicehistroydetail
+  def getdevicehistroydetail #获取设备历史明细
     devicehistroydetail  = Devicehistorylist.find(params[:id])
     render json: params[:callback]+'({"devicehistroy":'+ devicehistroydetail.to_json + '})',content_type: "application/javascript"
   end
 
-  def deletedevice
+  def deletedevice #移除设备
     device = Device.find_by_sn(params[:sn])
     device.deleteflag = 1
     device.save

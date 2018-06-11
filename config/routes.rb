@@ -1,9 +1,7 @@
 Rails.application.routes.draw do
-  root 'logins#index'
+  root 'logins#index' #主页
   resources :mytests
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
-  root 'devices#index'
-
   resources :mylogs do
     collection do
       post 'subscribe'
@@ -15,32 +13,32 @@ Rails.application.routes.draw do
       get 'test'
     end
   end
-  resources :configs
-  resources :devices do
-    resources :devicehistorylists
+  resources :configs #设置
+  resources :devices do #设备
+    resources :devicehistorylists #设备历史
     member do
       get 'refreshdevice'
     end
   end
-  resources :subscribedevices do
+  resources :subscribedevices do #注册设备
     collection do
       get 'getdevicesubscribeinfo'
     end
   end
-  resources :devicemaps do
+  resources :devicemaps do #设备地图
     collection do
       get 'getdevice'
     end
   end
-  resources :messages
-  resources :users do
+  resources :messages #短信
+  resources :users do #用户
     member do
       get 'attchuser'
       get 'attchdevice'
       get 'reldevice'
     end
-    resources :reldevices
-    resources :userdevides
+    resources :reldevices #关联用户设备
+    resources :userdevides #用户设备
   end
   resources :getopenids do
     collection do
@@ -48,9 +46,9 @@ Rails.application.routes.draw do
     end
   end
 
-  post '/', to: 'ygsubscribes#create'
+  post '/', to: 'ygsubscribes#create' #Iot回调接口
 
-  resources :apis do
+  resources :apis do #微信端API接口
     collection do
       get 'sign'
       get 'checkuserauth'
@@ -76,8 +74,8 @@ Rails.application.routes.draw do
       get 'getdevicebysn'
     end
   end
-  resources :logins
-  resources :admins do
+  resources :logins #登录
+  resources :admins do #管理员
     collection do
       get 'checkuser'
       get 'setauth'
@@ -87,8 +85,8 @@ Rails.application.routes.draw do
       post 'setauth'
     end
   end
-  resources :roles
-  resources :modifypwds
+  resources :roles #管理权限
+  resources :modifypwds #修改密码
   resources :noauths
 
 
